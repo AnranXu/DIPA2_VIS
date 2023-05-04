@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 import InformativenessStar from "./Star";
-
+import InformativenessCircle from "./Circle";
 // props
 // value: number (-3 <= n <=3)
 
@@ -9,11 +9,11 @@ const getText = (value) => {
     let firstWord = "";
     let secondWord = "";
     if (value < 0) {
-        secondWord = "Uninformative";
+        secondWord = "Disagree";
     } else if (value === 0) {
         secondWord = "Neutral";
     } else if (value > 0) {
-        secondWord = "Informative";
+        secondWord = "Agree";
     }
 
     const abs = Math.abs(value);
@@ -30,35 +30,7 @@ const getText = (value) => {
 
 const Informativeness = (props) => {
     const values = [-3, -2, -1, 0, 1, 2, 3];
-    console.log(props.value);
-
-    return (
-        <Stack>
-            <Typography variant="h5" fontWeight="bold">
-                Informativeness
-            </Typography>
-            <Stack alignItems="center" paddingTop="10px">
-                <Stack
-                    direction="row"
-                    spacing="10px"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    {values.map((value, i) => {
-                        return (
-                            <InformativenessStar
-                                key={i}
-                                filled={value <= props.value}
-                            />
-                        );
-                    })}
-                </Stack>
-                <Typography variant="h6" fontWeight="normal">
-                    {getText(props.value)}
-                </Typography>
-            </Stack>
-        </Stack>
-    );
+    //console.log(props.value);
     // return (
     //     <Stack>
     //         <Typography variant="h5" fontWeight="bold">
@@ -73,10 +45,9 @@ const Informativeness = (props) => {
     //             >
     //                 {values.map((value, i) => {
     //                     return (
-    //                         <InformativenessCircle
+    //                         <InformativenessStar
     //                             key={i}
-    //                             value={value}
-    //                             selected={value === props.value}
+    //                             filled={value <= props.value}
     //                         />
     //                     );
     //                 })}
@@ -87,6 +58,34 @@ const Informativeness = (props) => {
     //         </Stack>
     //     </Stack>
     // );
+    return (
+        <Stack>
+            <Typography variant="h5" fontWeight="bold">
+                Informativeness
+            </Typography>
+            <Stack alignItems="center" paddingTop="10px">
+                <Stack
+                    direction="row"
+                    spacing="10px"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    {values.map((value, i) => {
+                        return (
+                            <InformativenessCircle
+                                key={i}
+                                value={value}
+                                selected={value === props.value}
+                            />
+                        );
+                    })}
+                </Stack>
+                <Typography variant="h6" fontWeight="normal">
+                    {getText(props.value)}
+                </Typography>
+            </Stack>
+        </Stack>
+    );
 };
 
 export default Informativeness;

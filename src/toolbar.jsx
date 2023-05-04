@@ -17,7 +17,7 @@ class Toolbar extends Component {
         super(props);
         this.imgAnnotationMap = {};
         this.bucketRoot =
-            "https://iui-visualization.s3.ap-northeast-1.amazonaws.com/";
+            "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
         this.state = {
             selectedAnnotator: -1,
             currentImage: "",
@@ -26,54 +26,65 @@ class Toolbar extends Component {
             validList: [],
             validAnns: {},
             annotatorList: { CrowdWorks: [], Prolific: [] },
-            reasonValue: 0,
+            informationTypeText: [],
             informativenessValue: 0,
-            sharingValue: 0,
+            sharingOwnerText: [],
+            sharingOthersText: [],
             ifLoadAnnotator: false,
         };
         this.imgAnnotationMapLink = this.bucketRoot + "img_annotation_map.json";
         fetch(this.imgAnnotationMapLink)
             .then((res) => res.text())
             .then((text) => {
-                text = text.replaceAll("'", '"');
+                //text = text.replaceAll("'", '"');
                 this.imgAnnotationMap = JSON.parse(text);
                 this.keys = Object.keys(this.imgAnnotationMap);
                 this.currentImageIndex = -1;
                 this.listLen = this.keys.length;
                 this.moveToNext();
             });
-        this.reason = [
-            "",
-            "It tells personal identity.",
-            "It tells location of shooting.",
-            "It tells personal habits.",
-            "It tells social circle.",
+        this.informationType = [
+            "It tells personal information",
+            "It tells location of shooting",
+            "It tells individual preferences/pastimes",
+            "It tells social circle",
+            "It tells others\' private/confidential information",
             "Other things it can tell",
         ];
-        this.sharing = [
-            "",
+        this.sharingOwner = [
             "I won't share it",
-            "Family or friend",
+            "Close relationship",
+            "Regular relationship",
+            "Acquaintances",
             "Public",
-            "Broadcast programme",
+            "Broadcast program",
             "Other recipients",
         ];
+        this.sharingOthers = [
+            "I won't allow them to share it",
+            "Close relationship",
+            "Regular relationship",
+            "Acquaintances",
+            "Public",
+            "Broadcast program",
+            "Other recipients",
+        ];  
         this.intensity = [
             "",
-            "extremely uninformative",
-            "moderately uninformative",
-            "slightly uninformative",
+            "extremely disagree",
+            "moderately disagree",
+            "slightly disagree",
             "neutral",
-            "slightly informative",
-            "moderately informative",
-            "extremely informative",
+            "slightly agree",
+            "moderately agree",
+            "extremely agree",
         ];
     }
     componentDidUpdate(prevProps, prevState) {
         if (prevState.currentImage !== this.state.currentImage) {
             //fetch default label
             var prefix =
-                "https://iui-visualization.s3.ap-northeast-1.amazonaws.com/";
+                "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
             var image_URL =
                 prefix + "all_img/" + this.state.currentImage + ".jpg";
             var label_URL =
@@ -101,9 +112,10 @@ class Toolbar extends Component {
                     this.setState({
                         defaultBboxs: ori_bboxs,
                         validList: [],
-                        reasonValue: 0,
+                        informationTypeText: [],
                         informativenessValue: 0,
-                        sharingValue: 0,
+                        sharingOwnerText: [],
+                        sharingOthersText: [],
                     });
                 })
                 .then(() => {
@@ -113,6 +125,18 @@ class Toolbar extends Component {
                     console.error("Error:", error);
                 });
         }
+    }
+    getText(textArray, index) {
+    // get multiple choice answer from text array, 
+        var text = [];
+        //console.log(textArray, index)
+        for (var i = 0; i < textArray.length; i++) {
+            if (index[i] === 1) {
+                text.push(textArray[i]);
+            }
+        }
+        console.log(text);
+        return text;
     }
     createDefaultValidList = () => {
         // generate a list of valid bbox info to canvas.js
@@ -150,15 +174,19 @@ class Toolbar extends Component {
                 >
                     <hr style={{ marginTop: "-15px" }}></hr>
                     <DetailSection
-                        title={"Reason"}
-                        text={this.reason[this.state.reasonValue]}
+                        title={"Information Type"}
+                        text={this.state.informationTypeText}
                     />
                     <Informativeness
                         value={this.state.informativenessValue - 4}
                     />
                     <DetailSection
-                        title={"Sharing"}
-                        text={this.sharing[this.state.sharingValue]}
+                        title={"Sharing Scope (as photo owner)"}
+                        text={this.state.sharingOwnerText}
+                    />
+                    <DetailSection
+                        title={"Sharing Scope (by others)"}
+                        text={this.state.sharingOthersText}
                     />
                 </Stack>
             </Box>
@@ -166,6 +194,7 @@ class Toolbar extends Component {
     };
     showPrivacyInfo = (e) => {
         var category = e.target.id.split("-")[1];
+        console.log(this.state.validAnns)
         for (var i = 0; i < this.state.validList.length; i++) {
             var label = this.state.validList[i];
             var defaultLabelButton = document.getElementById(
@@ -178,14 +207,17 @@ class Toolbar extends Component {
             if (e.target.id === "defaultLabelButton-" + label) {
                 privacyDetail.style.display = "block";
                 e.target.style.color = "black";
-                var reasonValue = this.state.validAnns[category]["reason"];
+                var informationTypeValue = this.state.validAnns[category]["informationType"];
                 var informativenessValue =
                     this.state.validAnns[category]["informativeness"];
-                var sharingValue = this.state.validAnns[category]["sharing"];
+                var sharingOwnerValue = this.state.validAnns[category]["sharingOwner"];
+                var sharingOthersValue = this.state.validAnns[category]["sharingOthers"];
+                console.log(informationTypeValue, informativenessValue, sharingOwnerValue, sharingOthersValue);
                 this.setState({
-                    reasonValue: reasonValue,
+                    informationTypeText: this.getText(this.informationType, informationTypeValue),
                     informativenessValue: informativenessValue,
-                    sharingValue: sharingValue,
+                    sharingOwnerText: this.getText(this.sharingOwner, sharingOwnerValue),
+                    sharingOthersText: this.getText(this.sharingOthers, sharingOthersValue),
                 });
             } else {
                 defaultLabelButton.style.color = "grey";
@@ -281,7 +313,7 @@ class Toolbar extends Component {
     };
     loadPrivacyAnns = (e) => {
         var prefix =
-            "https://iui-visualization.s3.ap-northeast-1.amazonaws.com/";
+            "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
         console.log(document.getElementById("annotator").value);
         var platform = document.getElementById("annotator").value.split("-")[0];
         var selectFile = document

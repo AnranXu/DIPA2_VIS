@@ -92,25 +92,25 @@ class Toolbar extends Component {
             var image_URL =
                 prefix + "all_img/" + this.state.currentImage + ".jpg";
             var label_URL =
-                prefix + "all_label/" + this.state.currentImage + "_label";
+                prefix + "annotations/" + this.state.currentImage + "_label.json";
             var ori_bboxs = [];
             var label_list = {};
             fetch(label_URL)
                 .then((res) => res.text()) //read new label as text
                 .then((text) => {
-                    var ori_anns = text.split("\n"); // split it as each row has one annotation
-                    for (var i = 0; i < ori_anns.length; i++) {
-                        var json = ori_anns[i].replaceAll("'", '"');
-                        var cur_ann = JSON.parse(json); // parse each row as json file
-                        this.cur_source = cur_ann["source"];
+                    var cur_ann = JSON.parse(text); 
+                    var keys = Object.keys(cur_ann['annotations']);
+                    this.cur_source = cur_ann['source'];
+                    for(var i = 0; i < keys.length; i++)
+                    {
+                        //this.cur_source = cur_ann['source'];
                         ori_bboxs.push({
-                            bbox: cur_ann["bbox"],
-                            category: cur_ann["category"],
-                            width: cur_ann["width"],
-                            height: cur_ann["height"],
-                        }); //get bbox (x, y, w, h), width, height of the image (for unknown reasons, the scale of bboxs and real image sometimes are not identical), and category
+                        bbox: cur_ann['annotations'][keys[i]]['bbox'], 
+                        category: cur_ann['annotations'][keys[i]]['category'], 
+                        width: cur_ann['width'], 
+                        height: cur_ann['height']}); //get bbox (x, y, w, h), width, height of the image (for unknown reasons, the scale of bboxs and real image sometimes are not identical), and category
                         //create list of category, we just need to know that this image contain those categories.
-                        label_list[cur_ann["category"]] = 1;
+                        label_list[cur_ann['annotations'][keys[i]]['category']] = 1;
                     }
 
                     this.setState({

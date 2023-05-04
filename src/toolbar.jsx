@@ -31,6 +31,10 @@ class Toolbar extends Component {
             sharingOwnerText: [],
             sharingOthersText: [],
             ifLoadAnnotator: false,
+            age: [],
+            gender: [],
+            nationality: [],
+            bigFive: [],
         };
         this.imgAnnotationMapLink = this.bucketRoot + "img_annotation_map.json";
         fetch(this.imgAnnotationMapLink)
@@ -319,19 +323,44 @@ class Toolbar extends Component {
         var selectFile = document
             .getElementById("annotator")
             .value.split("-")[1];
+        var image_id = selectFile.split('_')[0];
+        var prefix_len = image_id.length + 1;
+        // remove prefix_len length word in selectFile to get worker_id
+
+        var worker_file = selectFile.slice(prefix_len);
+        var worker_id = worker_file.slice(0, -11) + '.json';
         var annotationURL = prefix + platform + "/labels/" + selectFile;
+        var workerURL = prefix + platform + "/workerinfo/" + worker_id;
         var validList = [];
+        // fetch worker info
+        fetch(workerURL).then((res) => res.text()) //read new label as text
+        .then((text) => {
+            var workerInfo = JSON.parse(text);
+            var bigFive = [];
+            bigFive.push('Agreeableness: ' + String(workerInfo['bigfives']['Agreeableness']));
+            bigFive.push('Conscientiousness: ' + String(workerInfo['bigfives']['Conscientiousness']));
+            bigFive.push('Extraversion: ' + String(workerInfo['bigfives']['Extraversion']));
+            bigFive.push('Neuroticism: ' + String(workerInfo['bigfives']['Neuroticism']));
+            bigFive.push('Openness: ' + String(workerInfo['bigfives']['Openness to Experience']));
+            this.setState({
+                age: [workerInfo["age"]],
+                gender: [workerInfo["gender"]],
+                nationality: [workerInfo["nationality"]],
+                bigFive: bigFive,
+            });
+        });
         fetch(annotationURL)
             .then((res) => res.text()) //read new label as text
             .then((text) => {
-                var json = text.replaceAll("'", '"');
-                var ann = JSON.parse(json); // parse each row as json file
+                //var json = text.replaceAll("'", '"');
+                var ann = JSON.parse(text); // parse each row as json file
                 var defaultAnn = ann["defaultAnnotation"];
                 var manualAnn = ann["manualAnnotation"];
                 var validAnns = {};
                 var keys = Object.keys(defaultAnn);
                 var manualKeys = Object.keys(manualAnn);
                 for (var i = 0; i < keys.length; i++) {
+                    // prefix of keys should not include Object in the prefix
                     if (!defaultAnn[keys[i]]["ifNoPrivacy"]) {
                         validList.push(keys[i]);
                         validAnns[keys[i]] = defaultAnn[keys[i]];
@@ -367,6 +396,72 @@ class Toolbar extends Component {
                 console.error("Error:", error);
             });
     };
+    showWorkerInfo (){
+        var workerInfo = document.getElementById("workerInfo");
+        var workerInfoButton = document.getElementById("workerInfoButton");
+        console.log(workerInfo, workerInfoButton);
+        if (workerInfo.style.display === "none") {
+            workerInfo.style.display = "block";
+        }
+        else {
+            workerInfo.style.display = "none";
+        }
+    }
+    workerInfo () {
+        return(
+        <Box
+            sx={{
+                border: "2px solid rgba(0, 0, 0, 0.2)",
+                borderRadius: "5px",
+                boxShadow: "2px 2px 1px 0px rgba(0,0,0,0.2)",
+            }}
+            textAlign="left"
+        >
+            <Button
+                onClick={(e) => {
+                    this.showWorkerInfo();
+                }}
+                id={"workerInfoButton"}
+                key={"workerInfoButton"}
+                fullWidth
+                sx={{
+                    justifyContent: "flex-start",
+                    fontSize: "30px",
+                    color: "grey",
+                    padding: "10px 25px",
+                }}
+                style={{color: 'red'}}
+            >
+                {'Worker\'s Information'}
+            </Button>
+
+            <Stack
+                id={"workerInfo"}
+                spacing="20px"
+                padding="0px 25px 20px 25px"
+                sx={{ display: "none" }}
+            >
+                <hr style={{ marginTop: "-15px" }}></hr>
+                <DetailSection
+                    title={"Age"}
+                    text={this.state.age}
+                />
+                <DetailSection
+                    title={"Gender"}
+                    text={this.state.gender}
+                />
+                <DetailSection
+                    title={"Nationality"}
+                    text={this.state.nationality}
+                />
+                <DetailSection
+                    title={"Big-five Personality"}
+                    text={this.state.bigFive}
+                />
+            </Stack>
+        </Box>);
+        
+    }
     render() {
         return (
             <>
@@ -405,6 +500,8 @@ class Toolbar extends Component {
                     padding="30px 20px"
                     width="calc(45vw - 40px)"
                 >
+                    {this.state.ifLoadAnnotator ? this.workerInfo(): <div></div>}
+                    <br></br>
                     {this.state.validList.length &&
                     this.state.ifLoadAnnotator ? (
                         <Stack width="100%" gap="20px">

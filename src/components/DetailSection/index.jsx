@@ -14,7 +14,6 @@ const DetailSection = (props) => {
             {
                 props.text.length > 0 ?
                 props.text.map((item, index) => {
-                    console.log(props.text);
                     return (
                         <Typography variant="h6" fontWeight="normal" key={index}>
                             {item}

@@ -35,6 +35,7 @@ class Toolbar extends Component {
             gender: [],
             nationality: [],
             bigFive: [],
+            frequency: [],
         };
         this.imgAnnotationMapLink = this.bucketRoot + "img_annotation_map.json";
         fetch(this.imgAnnotationMapLink)
@@ -82,6 +83,13 @@ class Toolbar extends Component {
             "slightly agree",
             "moderately agree",
             "extremely agree",
+        ];
+        this.frequency = [
+            "Never",
+            "Less than once a month",
+            "Once or more per month",
+            "Once or more per week",
+            "Once or more per day",
         ];
     }
     componentDidUpdate(prevProps, prevState) {
@@ -255,6 +263,11 @@ class Toolbar extends Component {
             manualBbox: [],
             validList: [],
             validAnns: {},
+            age: [],
+            gender: [],
+            nationality: [],
+            bigFive: [],
+            frequency: [],
             ifLoadAnnotator: false,
         });
         this.props.toolCallback({ defaultBboxs: [] });
@@ -271,6 +284,11 @@ class Toolbar extends Component {
             manualBbox: [],
             validList: [],
             validAnns: {},
+            age: [],
+            gender: [],
+            nationality: [],
+            bigFive: [],
+            frequency: [],
             ifLoadAnnotator: false,
         });
         this.props.toolCallback({ defaultBboxs: [] });
@@ -346,6 +364,7 @@ class Toolbar extends Component {
                 age: [workerInfo["age"]],
                 gender: [workerInfo["gender"]],
                 nationality: [workerInfo["nationality"]],
+                frequency: [this.frequency[workerInfo["frequency"]]],
                 bigFive: bigFive,
             });
         });
@@ -453,6 +472,10 @@ class Toolbar extends Component {
                 <DetailSection
                     title={"Nationality"}
                     text={this.state.nationality}
+                />
+                <DetailSection
+                    title={"Frequency of Shraing Own Photos"}
+                    text={this.state.frequency}
                 />
                 <DetailSection
                     title={"Big-five Personality"}

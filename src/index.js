@@ -20,15 +20,15 @@ const theme = createTheme({
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-document.title = "DIPA Visualization";
+document.title = "DIPA2 Visualization";
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Routes>
-          <Route path='/DIPA_visualization' element={<WelcomePage/>}>
+          <Route path='/DIPA2_VIS' element={<WelcomePage/>}>
           </Route>
-          <Route path='/DIPA_visualization/visualization' element={<Main/>}>
+          <Route path='/DIPA2_VIS/visualization' element={<Main/>}>
           </Route>
         </Routes>
       </BrowserRouter>

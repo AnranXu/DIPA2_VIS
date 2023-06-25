@@ -73,7 +73,7 @@ const WelcomePage = () => {
             },
             {
                 title: "Visualization",
-                link: "/DIPA_visualization/visualization",
+                link: "/DIPA2_VIS/visualization",
                 icon: <SmartDisplayIcon />,
             },
         ],

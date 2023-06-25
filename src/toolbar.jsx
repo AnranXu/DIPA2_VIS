@@ -16,8 +16,7 @@ class Toolbar extends Component {
     constructor(props) {
         super(props);
         this.imgAnnotationMap = {};
-        this.bucketRoot =
-            "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
+        this.prefix = "https://anran-tmp.s3.ap-northeast-1.amazonaws.com/"; //"https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
         this.state = {
             selectedAnnotator: -1,
             currentImage: "",
@@ -37,7 +36,7 @@ class Toolbar extends Component {
             bigFive: [],
             frequency: [],
         };
-        this.imgAnnotationMapLink = this.bucketRoot + "img_annotation_map.json";
+        this.imgAnnotationMapLink = this.prefix + "img_annotation_map.json";
         fetch(this.imgAnnotationMapLink)
             .then((res) => res.text())
             .then((text) => {
@@ -95,14 +94,15 @@ class Toolbar extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevState.currentImage !== this.state.currentImage) {
             //fetch default label
-            var prefix =
-                "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
+            var prefix = this.prefix;
+            console.log(this.state.currentImage);
             var image_URL =
                 prefix + "all_img/" + this.state.currentImage + ".jpg";
             var label_URL =
                 prefix + "annotations/" + this.state.currentImage + "_label.json";
             var ori_bboxs = [];
             var label_list = {};
+            this.calculateAverageInformativeness();
             fetch(label_URL)
                 .then((res) => res.text()) //read new label as text
                 .then((text) => {
@@ -334,8 +334,7 @@ class Toolbar extends Component {
         });
     };
     loadPrivacyAnns = (e) => {
-        var prefix =
-            "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
+        var prefix = this.prefix;
         console.log(document.getElementById("annotator").value);
         var platform = document.getElementById("annotator").value.split("-")[0];
         var selectFile = document
@@ -484,6 +483,60 @@ class Toolbar extends Component {
             </Stack>
         </Box>);
         
+    }
+    calculateAverageInformativeness(){
+        var prefix  = this.prefix;
+        var urls = [];
+        for (var i = 0; i < this.state.annotatorList['CrowdWorks'].length; i++){
+            // input annotation url 
+            var annotationURL = prefix + "CrowdWorks/labels/" + this.state.annotatorList['CrowdWorks'][i];
+            urls.push(annotationURL);
+        }
+        for (var i = 0; i < this.state.annotatorList['Prolific'].length; i++){
+            // input annotation url
+            var annotationURL = prefix + "Prolific/labels/" + this.state.annotatorList['Prolific'][i];
+            urls.push(annotationURL);
+        }
+        console.log(urls);
+        Promise.all(urls.map(url =>
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+        ))
+        .then(dataArray => {
+            let result = {};
+            for (var i = 0; i < dataArray.length; i++)
+            {
+                for (let [key, value] of Object.entries(dataArray[i]['defaultAnnotation'])) {
+                    if(value['ifNoPrivacy'] === true)
+                        continue;
+                    if (key in result){
+                        result[key].push(Number(value['informativeness']));
+                    }
+                    else{
+                        result[key] = [Number(value['informativeness'])];
+                    }
+                }
+            }
+            // calculate average informativeness for each key
+            for (let [key, value] of Object.entries(result)) {
+                var sum = 0;
+                for (var i = 0; i < value.length; i++){
+                    sum += value[i];
+                }
+                result[key] = sum / value.length;
+                // to 2 decimal places
+                result[key] = Math.round(result[key] * 100) / 100;
+            }
+            console.log('average informativeness: ', result);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
     render() {
         return (

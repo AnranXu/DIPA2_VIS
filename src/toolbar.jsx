@@ -147,7 +147,7 @@ class Toolbar extends Component {
                 text.push(textArray[i]);
             }
         }
-        console.log(text);
+        //console.log(text);
         return text;
     }
     createDefaultValidList = () => {
@@ -206,7 +206,7 @@ class Toolbar extends Component {
     };
     showPrivacyInfo = (e) => {
         var category = e.target.id.split("-")[1];
-        console.log(this.state.validAnns)
+        //console.log(this.state.validAnns)
         for (var i = 0; i < this.state.validList.length; i++) {
             var label = this.state.validList[i];
             var defaultLabelButton = document.getElementById(
@@ -224,7 +224,7 @@ class Toolbar extends Component {
                     this.state.validAnns[category]["informativeness"];
                 var sharingOwnerValue = this.state.validAnns[category]["sharingOwner"];
                 var sharingOthersValue = this.state.validAnns[category]["sharingOthers"];
-                console.log(informationTypeValue, informativenessValue, sharingOwnerValue, sharingOthersValue);
+                //console.log(informationTypeValue, informativenessValue, sharingOwnerValue, sharingOthersValue);
                 this.setState({
                     informationTypeText: this.getText(this.informationType, informationTypeValue),
                     informativenessValue: informativenessValue,
@@ -335,7 +335,7 @@ class Toolbar extends Component {
     };
     loadPrivacyAnns = (e) => {
         var prefix = this.prefix;
-        console.log(document.getElementById("annotator").value);
+        //console.log(document.getElementById("annotator").value);
         var platform = document.getElementById("annotator").value.split("-")[0];
         var selectFile = document
             .getElementById("annotator")
@@ -497,7 +497,7 @@ class Toolbar extends Component {
             var annotationURL = prefix + "Prolific/labels/" + this.state.annotatorList['Prolific'][i];
             urls.push(annotationURL);
         }
-        console.log(urls);
+        //console.log(urls);
         Promise.all(urls.map(url =>
             fetch(url)
                 .then(response => {

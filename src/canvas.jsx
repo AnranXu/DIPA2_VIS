@@ -24,7 +24,7 @@ class Canvas extends Component {
         this.sendStage();
     }
     toolCallback = (childData) =>{
-        console.log(childData);
+        //console.log(childData);
         this.setState(childData);
     }
     createDefaultBboxs = () => {

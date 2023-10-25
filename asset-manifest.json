@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/DIPA2_VIS/static/css/main.073c9b0a.css",
+    "main.js": "/DIPA2_VIS/static/js/main.2f1a6aca.js",
+    "static/js/787.2dc475b8.chunk.js": "/DIPA2_VIS/static/js/787.2dc475b8.chunk.js",
+    "index.html": "/DIPA2_VIS/index.html",
+    "main.073c9b0a.css.map": "/DIPA2_VIS/static/css/main.073c9b0a.css.map",
+    "main.2f1a6aca.js.map": "/DIPA2_VIS/static/js/main.2f1a6aca.js.map",
+    "787.2dc475b8.chunk.js.map": "/DIPA2_VIS/static/js/787.2dc475b8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.2f1a6aca.js"
+  ]
+}

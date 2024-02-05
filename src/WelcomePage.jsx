@@ -63,7 +63,7 @@ const WelcomePage = () => {
         () => [
             {
                 title: "Paper",
-                link: "https://doi.org/10.1145/3581754.3584176",
+                link: "https://dl.acm.org/doi/10.1145/3631439",
                 icon: <ArticleIcon />,
             },
             {

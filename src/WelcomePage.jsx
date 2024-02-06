@@ -68,7 +68,7 @@ const WelcomePage = () => {
             },
             {
                 title: "Dataset",
-                link: "https://dipa-download.s3.ap-northeast-1.amazonaws.com/dataset.zip",
+                link: "https://dipa-download.s3.ap-northeast-1.amazonaws.com/DIPA2dataset.zip",
                 icon: <CollectionsIcon />,
             },
             {
@@ -86,8 +86,7 @@ const WelcomePage = () => {
                 <Row>
                     <Col>
                         <Typography variant="h3" fontWeight="bold" textAlign="center" sx={{alignItems: "center"}}>
-                            DIPA: An Image Dataset with Cross-cultural Privacy Concern
-                            Annotations
+                            DIPA2: An Image Dataset with Cross-cultural Privacy Perception Annotations
                         </Typography>
                     </Col>
                     
@@ -132,7 +131,7 @@ const WelcomePage = () => {
                         <Typography variant="h4">
                             The University of Tokyo [1], University of Oulu [2]
                         </Typography>
-                        <Typography variant="h4">IUI 2023 Open Science track</Typography>
+                        <Typography variant="h4">Proc. ACM Interact. Mob. Wearable Ubiquitous Technol. 7, 4, Article 192 (December 2023)</Typography>
                     </SubContainer>
                 </Row>
                 <br></br>

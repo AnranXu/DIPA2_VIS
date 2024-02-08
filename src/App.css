@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Full height */
+  width: 100%; /* Full width */
+}
+
+#root, .App { /* Adjust depending on your root element's class or ID */
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Use 100vh to fill the screen height */
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.content {
+  flex: 1;
+  overflow: hidden; /* Allows content area to scroll internally if needed */
+}
+
+.footer {
+  flex-shrink: 0; /* Prevents the footer from shrinking */
+  /* Your footer styling */
+}

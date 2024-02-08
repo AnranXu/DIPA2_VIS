@@ -18,7 +18,8 @@ const Wrapper = styled(Stack)(({ theme }) => ({
     justifyContent: "flex-start",
     textAlign: "flex-start",
     alignItems: "center",
-
+    minHeight: "80vh",
+    maxHeight: "100vh",
     gap: theme.spacing(6),
 
     padding: theme.spacing(10, 20),
@@ -40,6 +41,12 @@ const SubContainer = styled(Stack)(({ theme }) => ({
     alignItems: "center",
 
     gap: theme.spacing(1),
+}));
+
+const Footer = styled('div')(({ theme }) => ({
+    textAlign: 'center',
+    padding: theme.spacing(2), // Adjust padding as needed
+    marginTop: 'auto', // This pushes the footer to the bottom
 }));
 
 const WelcomePage = () => {
@@ -154,10 +161,14 @@ const WelcomePage = () => {
                         ))}
                     </Stack>
                 </SubContainer>
-
-                
                 <Container></Container>
+            
             </Container>
+            <Footer>
+                <Typography variant="body2">
+                    "DIPA2: An Image Dataset with Cross-cultural Privacy Perception Annotations" © 2024 by Anran Xu, Zhongyi Zhou, Kakeru Miyazaki, Ryo Yoshikawa, Simo Hosio, Koji Yatani is licensed under CC BY 4.0. To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by/4.0/" underline="hover" target="_blank">http://creativecommons.org/licenses/by/4.0/</a>.
+                </Typography>
+            </Footer>
         </Wrapper>
     );
 };

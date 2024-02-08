@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/DIPA2_VIS/static/css/main.073c9b0a.css",
-    "main.js": "/DIPA2_VIS/static/js/main.9f3da9fe.js",
+    "main.css": "/DIPA2_VIS/static/css/main.5ba11714.css",
+    "main.js": "/DIPA2_VIS/static/js/main.83b6b7c0.js",
     "static/js/787.2dc475b8.chunk.js": "/DIPA2_VIS/static/js/787.2dc475b8.chunk.js",
     "index.html": "/DIPA2_VIS/index.html",
-    "main.073c9b0a.css.map": "/DIPA2_VIS/static/css/main.073c9b0a.css.map",
-    "main.9f3da9fe.js.map": "/DIPA2_VIS/static/js/main.9f3da9fe.js.map",
+    "main.5ba11714.css.map": "/DIPA2_VIS/static/css/main.5ba11714.css.map",
+    "main.83b6b7c0.js.map": "/DIPA2_VIS/static/js/main.83b6b7c0.js.map",
     "787.2dc475b8.chunk.js.map": "/DIPA2_VIS/static/js/787.2dc475b8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.9f3da9fe.js"
+    "static/css/main.5ba11714.css",
+    "static/js/main.83b6b7c0.js"
   ]
 }

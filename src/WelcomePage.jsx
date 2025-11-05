@@ -75,7 +75,7 @@ const WelcomePage = () => {
             },
             {
                 title: "Dataset",
-                link: "https://dipa-download.s3.ap-northeast-1.amazonaws.com/DIPA2dataset.zip",
+                link: "https://dl.acm.org/doi/suppl/10.1145/3631439/suppl_file/xu.zip",
                 icon: <CollectionsIcon />,
             },
             {

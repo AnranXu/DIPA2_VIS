@@ -16,7 +16,7 @@ class Toolbar extends Component {
     constructor(props) {
         super(props);
         this.imgAnnotationMap = {};
-        this.prefix = "https://imwut-visualization.s3.ap-northeast-1.amazonaws.com/";
+        this.prefix = "https://imwut-dipa2-visualization.s3.ap-northeast-1.amazonaws.com/";
         this.state = {
             selectedAnnotator: -1,
             currentImage: "",
